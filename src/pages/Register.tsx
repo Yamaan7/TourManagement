@@ -17,8 +17,8 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <div className="bg-white p-8 rounded-lg shadow-md">
+    <div className="min-h-screen py-16 flex items-center">
+      <div className="max-w-md mx-auto w-full px-4">
         <div className="text-center mb-8">
           <UserPlus className="w-12 h-12 text-blue-600 mx-auto mb-4" />
           <h2 className="text-2xl font-bold">Create Account</h2>

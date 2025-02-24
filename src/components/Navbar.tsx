@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, User, LogIn } from 'lucide-react';
+import { Compass, User, LogIn, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4">
@@ -11,8 +17,22 @@ const Navbar = () => {
             <Compass className="h-8 w-8 text-blue-600" />
             <span className="text-xl font-bold">TourGuide</span>
           </Link>
-          
-          <div className="flex items-center space-x-8">
+
+          {/* Mobile menu button */}
+          <button
+            onClick={toggleMenu}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6 text-gray-600" />
+            ) : (
+              <Menu className="h-6 w-6 text-gray-600" />
+            )}
+          </button>
+
+          {/* Desktop menu */}
+          <div className="hidden md:flex items-center space-x-8">
             <Link to="/tours" className="text-gray-600 hover:text-blue-600">
               Tours
             </Link>
@@ -28,6 +48,33 @@ const Navbar = () => {
               <span>Sign Up</span>
             </Link>
           </div>
+        </div>
+
+        {/* Mobile menu */}
+        <div
+          className={`${isMenuOpen ? 'block' : 'hidden'
+            } md:hidden py-4 space-y-4 border-t border-gray-100`}
+        >
+          <Link
+            to="/tours"
+            className="block px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg"
+          >
+            Tours
+          </Link>
+          <Link
+            to="/login"
+            className="flex items-center space-x-1 px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg"
+          >
+            <LogIn className="h-5 w-5" />
+            <span>Login</span>
+          </Link>
+          <Link
+            to="/register"
+            className="flex items-center space-x-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <User className="h-5 w-5" />
+            <span>Sign Up</span>
+          </Link>
         </div>
       </div>
     </nav>

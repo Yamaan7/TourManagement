@@ -1,10 +1,14 @@
-import React from 'react';
 import { Clock, Users, Star } from 'lucide-react';
+
+// Import images
+import greekIslands from '../assets/images/deals/greek-islands.jpeg';
+import northernLights from '../assets/images/deals/northern-lights.jpeg';
+import safari from '../assets/images/deals/safari.jpeg';
 
 const deals = [
   {
     title: "Greek Islands Cruise",
-    image: "https://images.unsplash.com/photo-1533105079780-92b9be482077",
+    image: greekIslands,
     originalPrice: 2499,
     discountedPrice: 1999,
     duration: "8 days",
@@ -15,7 +19,7 @@ const deals = [
   },
   {
     title: "Northern Lights Adventure",
-    image: "https://images.unsplash.com/photo-1579033461380-adb47c3eb938",
+    image: northernLights,
     originalPrice: 1899,
     discountedPrice: 1599,
     duration: "6 days",
@@ -26,7 +30,7 @@ const deals = [
   },
   {
     title: "Safari Experience",
-    image: "https://images.unsplash.com/photo-1516426122078-c23e76319801",
+    image: safari,
     originalPrice: 3299,
     discountedPrice: 2799,
     duration: "10 days",
@@ -39,7 +43,7 @@ const deals = [
 
 const FeaturedDeals = () => {
   return (
-    <div className="py-16 bg-gray-50">
+    <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Limited Time Offers</h2>
@@ -49,13 +53,19 @@ const FeaturedDeals = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {deals.map((deal, index) => (
-            <div key={index} className="bg-white rounded-xl overflow-hidden shadow-lg group">
+          {deals.map((deal) => (
+            <div
+              key={deal.title}
+              className="bg-white rounded-xl overflow-hidden shadow-lg"
+            >
               <div className="relative">
                 <img
+                  loading="lazy"
                   src={deal.image}
                   alt={deal.title}
-                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                  width="400"
+                  height="300"
+                  className="w-full h-64 object-cover"
                 />
                 <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {deal.discount}% OFF
@@ -64,7 +74,7 @@ const FeaturedDeals = () => {
 
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">{deal.title}</h3>
-                
+
                 <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
                   <div className="flex items-center gap-1">
                     <Clock size={16} />
@@ -89,7 +99,10 @@ const FeaturedDeals = () => {
                   </span>
                 </div>
 
-                <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                <button
+                  className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                  onClick={() => window.location.href = '/tours'}
+                >
                   Book Now
                 </button>
               </div>
@@ -97,7 +110,7 @@ const FeaturedDeals = () => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

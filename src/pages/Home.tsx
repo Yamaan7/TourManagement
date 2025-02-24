@@ -1,49 +1,67 @@
-import React from 'react';
+import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Calendar, CreditCard, Search, ChevronRight } from 'lucide-react';
-import Stats from '../components/Stats';
-import Testimonials from '../components/Testimonials';
-import Newsletter from '../components/Newsletter';
-import TourCategories from '../components/TourCategories';
-import FeaturedDeals from '../components/FeaturedDeals';
-import WhyChooseUs from '../components/WhyChooseUs';
+
+// Lazy load components that are not immediately visible
+const Stats = lazy(() => import('../components/Stats'));
+const Testimonials = lazy(() => import('../components/Testimonials'));
+const Newsletter = lazy(() => import('../components/Newsletter'));
+const TourCategories = lazy(() => import('../components/TourCategories'));
+const FeaturedDeals = lazy(() => import('../components/FeaturedDeals'));
+const WhyChooseUs = lazy(() => import('../components/WhyChooseUs'));
+
+// Import images
+import heroBg from '../assets/images/destinations/hero-bg.jpg';
+import parisImg from '../assets/images/destinations/paris.jpg';
+import romeImg from '../assets/images/destinations/rome.jpg';
+import tokyoImg from '../assets/images/destinations/tokyo.jpg';
+import barcelonaImg from '../assets/images/destinations/barcelona.jpg';
 
 const popularDestinations = [
   {
     name: "Paris",
     country: "France",
-    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+    image: parisImg,
     tours: 15
   },
   {
     name: "Rome",
     country: "Italy",
-    image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5",
+    image: romeImg,
     tours: 12
   },
   {
     name: "Tokyo",
     country: "Japan",
-    image: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26",
+    image: tokyoImg,
     tours: 18
   },
   {
     name: "Barcelona",
     country: "Spain",
-    image: "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216",
+    image: barcelonaImg,
     tours: 10
   }
 ];
 
+const LoadingFallback = () => (
+  <div className="h-48 flex items-center justify-center">
+    <div className="animate-pulse text-gray-500">Loading...</div>
+  </div>
+);
+
 const Home = () => {
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section - Keep outside Suspense for immediate loading */}
       <div className="relative bg-gray-900 text-white py-24 md:py-32">
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800"
+            loading="eager"
+            src={heroBg}
             alt="Travel Background"
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover opacity-30"
           />
         </div>
@@ -72,77 +90,74 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Featured Deals */}
-      <FeaturedDeals />
+      {/* Wrap components below the fold in Suspense */}
+      <Suspense fallback={<LoadingFallback />}>
+        <FeaturedDeals />
+        <TourCategories />
 
-      {/* Tour Categories */}
-      <TourCategories />
-
-      {/* How It Works Section */}
-      <div className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <MapPin className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Choose Destination</h3>
-              <p className="text-gray-600">
-                Select from hundreds of exciting destinations worldwide
-              </p>
-            </div>
-            <div className="text-center p-6">
-              <Calendar className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Pick Date</h3>
-              <p className="text-gray-600">
-                Find the perfect time for your next adventure
-              </p>
-            </div>
-            <div className="text-center p-6">
-              <CreditCard className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Book Instantly</h3>
-              <p className="text-gray-600">
-                Secure your spot with easy online booking
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Why Choose Us */}
-      <WhyChooseUs />
-
-      {/* Stats Section */}
-      <Stats />
-
-      {/* Popular Destinations */}
-      <div className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Popular Destinations</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {popularDestinations.map((destination, index) => (
-              <div key={index} className="group relative rounded-lg overflow-hidden shadow-md">
-                <img
-                  src={destination.image}
-                  alt={destination.name}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-4 text-white">
-                  <h3 className="text-xl font-semibold">{destination.name}</h3>
-                  <p className="text-sm mb-2">{destination.country}</p>
-                  <p className="text-sm">{destination.tours} tours</p>
-                </div>
+        {/* How It Works Section */}
+        <div className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center p-6">
+                <MapPin className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Choose Destination</h3>
+                <p className="text-gray-600">
+                  Select from hundreds of exciting destinations worldwide
+                </p>
               </div>
-            ))}
+              <div className="text-center p-6">
+                <Calendar className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Pick Date</h3>
+                <p className="text-gray-600">
+                  Find the perfect time for your next adventure
+                </p>
+              </div>
+              <div className="text-center p-6">
+                <CreditCard className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Book Instantly</h3>
+                <p className="text-gray-600">
+                  Secure your spot with easy online booking
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Testimonials Section */}
-      <Testimonials />
+        <WhyChooseUs />
+        <Stats />
 
-      {/* Newsletter Section */}
-      <Newsletter />
+        {/* Popular Destinations */}
+        <div className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">Popular Destinations</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {popularDestinations.map((destination) => (
+                <div key={destination.name} className="group relative rounded-lg overflow-hidden shadow-md">
+                  <img
+                    loading="lazy"
+                    src={destination.image}
+                    alt={destination.name}
+                    width={400}
+                    height={300}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-4 text-white">
+                    <h3 className="text-xl font-semibold">{destination.name}</h3>
+                    <p className="text-sm mb-2">{destination.country}</p>
+                    <p className="text-sm">{destination.tours} tours</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <Testimonials />
+        <Newsletter />
+      </Suspense>
     </>
   );
 };

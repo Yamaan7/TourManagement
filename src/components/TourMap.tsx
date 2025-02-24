@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// Replace with your Mapbox access token
-mapboxgl.accessToken = 'pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJjbGV4YW1wbGUwMDAwMTJleGFtcGxlIjp9.example';
+// Set Mapbox token from environment variable
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
 interface Location {
   coordinates: [number, number];
